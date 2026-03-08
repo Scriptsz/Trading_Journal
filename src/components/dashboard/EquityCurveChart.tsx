@@ -34,16 +34,16 @@ export function EquityCurveChart() {
             <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.02} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
         <XAxis
           dataKey="date"
-          tick={{ fill: '#9CA3AF', fontSize: 11 }}
+          tick={{ fill: '#9D9D9D', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           tickFormatter={(val) => val.slice(5)}
         />
         <YAxis
-          tick={{ fill: '#9CA3AF', fontSize: 11 }}
+          tick={{ fill: '#9D9D9D', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}

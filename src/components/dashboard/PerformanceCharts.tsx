@@ -27,9 +27,9 @@ export function MonthlyPnLChart() {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <BarChart data={monthlyPnLData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis dataKey="month" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis dataKey="month" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="pnl" name="Monthly PnL" radius={[4, 4, 0, 0]}>
           {monthlyPnLData.map((entry, index) => (
@@ -45,9 +45,9 @@ export function StrategyPerformanceChart() {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <BarChart data={strategyPerformance} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis type="number" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
-        <YAxis type="category" dataKey="name" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} width={90} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis type="number" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
+        <YAxis type="category" dataKey="name" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} width={90} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="totalPnl" name="Total PnL" fill="#3B82F6" radius={[0, 4, 4, 0]}>
           {strategyPerformance.map((entry, index) => (
@@ -77,9 +77,9 @@ export function WinRateChart() {
             <stop offset="95%" stopColor="#10B981" stopOpacity={0.02} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis dataKey="month" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} domain={[40, 100]} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis dataKey="month" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} domain={[40, 100]} />
         <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="winRate" name="Win Rate" stroke="#10B981" strokeWidth={2} fill="url(#winRateGradient)" dot={false} />
       </AreaChart>
@@ -107,14 +107,14 @@ export function WinLossPieChart() {
         <Tooltip
           formatter={(value: number, name: string) => [value, name]}
           contentStyle={{
-            background: '#0D1130',
-            border: '1px solid rgba(255,255,255,0.1)',
+            background: '#FFFFFF',
+            border: '1px solid #C4C4C4',
             borderRadius: '8px',
-            color: '#F9FAFB',
+            color: '#191F1D',
           }}
         />
         <Legend
-          formatter={(value) => <span style={{ color: '#9CA3AF', fontSize: '12px' }}>{value}</span>}
+          formatter={(value) => <span style={{ color: '#9D9D9D', fontSize: '12px' }}>{value}</span>}
         />
       </PieChart>
     </ResponsiveContainer>
@@ -133,9 +133,9 @@ export function RRChart() {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <LineChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis dataKey="month" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}:1`} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis dataKey="month" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}:1`} />
         <Tooltip content={<CustomTooltip />} />
         <Line type="monotone" dataKey="avgRR" name="Avg R:R" stroke="#F59E0B" strokeWidth={2} dot={{ r: 4, fill: '#F59E0B' }} activeDot={{ r: 5 }} />
       </LineChart>
@@ -158,9 +158,9 @@ export function AssetPerformanceChart() {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <BarChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis dataKey="asset" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis dataKey="asset" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="pnl" name="Total PnL" radius={[4, 4, 0, 0]}>
           {data.map((entry, index) => (
@@ -191,9 +191,9 @@ export function DrawdownChart() {
             <stop offset="95%" stopColor="#EF4444" stopOpacity={0.02} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-        <XAxis dataKey="date" tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
+        <XAxis dataKey="date" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
         <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="drawdown" name="Drawdown %" stroke="#EF4444" strokeWidth={2} fill="url(#drawdownGradient)" dot={false} />
       </AreaChart>
