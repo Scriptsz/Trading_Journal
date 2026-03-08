@@ -90,7 +90,7 @@ export function WinRateChart({ data = [] }: { data?: WinRateData[] }) {
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,196,196,0.1)" />
         <XAxis dataKey="month" tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} domain={[0, 100]} />
+        <YAxis tick={{ fill: '#9D9D9D', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} domain={(['auto', 'auto'] as [string, string])} />
         <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="winRate" name="Win Rate" stroke="#10B981" strokeWidth={2} fill="url(#winRateGradient)" dot={false} />
       </AreaChart>
