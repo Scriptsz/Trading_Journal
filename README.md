@@ -1,15 +1,46 @@
 # TradeLog - Professional Trading Journal SaaS Platform
 
-> **⚠️ Design not loading? Page looks completely unstyled?**
-> The dev server now auto-installs dependencies when they are missing, so simply run:
+---
+
+## 🚀 Quick Start — Full Terminal Commands
+
+Open a terminal (in VS Code press **Ctrl+`** on Windows/Linux or **Cmd+`** on Mac), then run every line below **in order**:
+
+```bash
+# 1. Go into the project folder  (skip if you're already there)
+cd Trading_Journal
+
+# 2. Pull the very latest code from GitHub
+git checkout copilot/implement-trading-journal-platform
+git pull origin copilot/implement-trading-journal-platform
+
+# 3. Install / refresh all packages  (fixes missing styles)
+npm install
+
+# 4. Start the development server
+npm run dev
+```
+
+Then open **[http://localhost:3000](http://localhost:3000)** in your browser. The full dark design should appear.
+
+> **Still seeing an unstyled page after `npm install`?**  
+> Delete the cache folder and reinstall completely.  
+> ⚠️ Run this **inside your project folder** only — it deletes `.next/` (build cache) and `node_modules/` which will be recreated by `npm install`:
 > ```bash
+> rm -rf .next node_modules
+> npm install
 > npm run dev
 > ```
-> If the auto-install doesn't trigger for any reason, you can always fix it manually:
+
+> **`git pull` blocked by local changes?**  
 > ```bash
-> npm install && npm run dev
+> git checkout -- package-lock.json
+> git pull origin copilot/implement-trading-journal-platform
+> npm install
+> npm run dev
 > ```
-> **Why this happens:** `node_modules/` is never stored in Git. Every fresh clone or environment reset empties the directory, so Tailwind CSS never runs and the browser receives zero styles. The `predev` / `prebuild` hooks in `package.json` detect and fix this automatically.
+
+---
 
 A production-ready Trading Journal SaaS platform with dark fintech UI, built with Next.js 14, TypeScript, Tailwind CSS, and Recharts.
 
