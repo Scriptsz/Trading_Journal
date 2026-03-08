@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #0A0E27;
+  --background: #F2F2F2;
 }
 
 * {
@@ -22,8 +22,8 @@ body {
 }
 
 body {
-  background-color: #0A0E27;
-  color: #F9FAFB;
+  background-color: #F2F2F2;
+  color: #191F1D;
 }
 
 /* Custom scrollbar */
@@ -32,40 +32,40 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #C4C4C4;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #9D9D9D;
 }
 
 /* Glass effect */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #C4C4C4;
 }
 
 .glass-hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #C4C4C4;
   transition: all 0.3s ease;
 }
 
 .glass-hover:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.95);
   transform: scale(1.02);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(to right, #3B82F6, #60A5FA, #3B82F6);
+  background: linear-gradient(to right, #303332, #616161, #303332);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -116,7 +116,7 @@ input[type='number'] {
 
 /* Date input styling */
 input[type='date']::-webkit-calendar-picker-indicator {
-  filter: invert(1) opacity(0.5);
+  filter: opacity(0.7);
 }
 
 /* Recharts tooltip */

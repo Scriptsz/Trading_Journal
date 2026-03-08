@@ -124,7 +124,7 @@ export function Hero() {
             <div className="px-6 pb-6 grid grid-cols-2 gap-4">
               <div className="bg-background-secondary rounded-xl p-4 border border-border h-40 flex items-end gap-1">
                 {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 100].map((h, i) => (
-                  <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: `rgba(59, 130, 246, ${0.3 + i * 0.05})` }} />
+                  <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: `rgba(48, 51, 50, ${0.3 + i * 0.05})` }} />
                 ))}
               </div>
               <div className="bg-background-secondary rounded-xl p-4 border border-border h-40">
