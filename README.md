@@ -4,7 +4,32 @@
 
 ## 🚀 Quick Start — Full Terminal Commands
 
-Open a terminal (in VS Code press **Ctrl+`** on Windows/Linux or **Cmd+`** on Mac), then run every line below **in order**:
+Open a terminal (in VS Code press **Ctrl+`** on Windows/Linux or **Cmd+`** on Mac), then run every line below **in order**.
+
+> ℹ️ **Which terminal are you using?**  
+> - **Windows PowerShell / VS Code default on Windows** → use the **PowerShell** blocks below  
+> - **Mac / Linux / Git Bash / WSL** → use the **bash** blocks below
+
+---
+
+### Windows PowerShell
+
+```powershell
+# 1. Go into the project folder  (skip if you're already there)
+cd Trading_Journal
+
+# 2. Pull the very latest code from GitHub
+git checkout copilot/implement-trading-journal-platform
+git pull origin copilot/implement-trading-journal-platform
+
+# 3. Install / refresh all packages  (fixes missing styles)
+npm install
+
+# 4. Start the development server
+npm run dev
+```
+
+### Mac / Linux / Git Bash / WSL
 
 ```bash
 # 1. Go into the project folder  (skip if you're already there)
@@ -23,22 +48,38 @@ npm run dev
 
 Then open **[http://localhost:3000](http://localhost:3000)** in your browser. The full dark design should appear.
 
-> **Still seeing an unstyled page after `npm install`?**  
-> Delete the cache folder and reinstall completely.  
-> ⚠️ Run this **inside your project folder** only — it deletes `.next/` (build cache) and `node_modules/` which will be recreated by `npm install`:
-> ```bash
-> rm -rf .next node_modules
-> npm install
-> npm run dev
-> ```
+---
 
-> **`git pull` blocked by local changes?**  
-> ```bash
-> git checkout -- package-lock.json
-> git pull origin copilot/implement-trading-journal-platform
-> npm install
-> npm run dev
-> ```
+### 🔴 Still seeing an unstyled page after `npm install`?
+
+Delete the build cache and `node_modules/`, then reinstall from scratch.  
+⚠️ Run these commands **inside your project folder** only.
+
+**Windows PowerShell:**
+```powershell
+Remove-Item -Recurse -Force .next, node_modules
+npm install
+npm run dev
+```
+
+**Mac / Linux / Git Bash / WSL:**
+```bash
+rm -rf .next node_modules
+npm install
+npm run dev
+```
+
+---
+
+### 🔴 `git pull` blocked by local changes?
+
+These commands work in both PowerShell and bash:
+```
+git checkout -- package-lock.json
+git pull origin copilot/implement-trading-journal-platform
+npm install
+npm run dev
+```
 
 ---
 
