@@ -29,6 +29,49 @@ A production-ready Trading Journal SaaS platform with dark fintech UI, built wit
 - PostgreSQL database
 - Clerk account
 
+## Getting the Latest Changes
+
+If you already have the repository open locally in VS Code but your code is outdated, follow these steps to pull in the newest commits without re-cloning:
+
+### 1 · Open the built-in terminal in VS Code
+Press `` Ctrl+` `` (Windows/Linux) or `` Cmd+` `` (Mac) to open the integrated terminal.
+
+### 2 · Make sure you are on the right branch
+The latest fixes live on the `main` branch (or the feature branch referenced in the PR). Run:
+
+```bash
+# see all available branches
+git fetch origin
+
+# switch to main (replace with the branch name if different)
+git checkout main
+
+# pull the latest commits
+git pull origin main
+```
+
+> **Tip – if you see a PR branch listed** (e.g. `copilot/implement-trading-journal-platform`), check it out instead:
+> ```bash
+> git checkout copilot/implement-trading-journal-platform
+> git pull origin copilot/implement-trading-journal-platform
+> ```
+
+### 3 · Reinstall dependencies (in case new packages were added)
+
+```bash
+npm install
+```
+
+### 4 · Restart the dev server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) — the page should now load with the full design.
+
+---
+
 ## Installation
 
 1. **Clone the repository**
