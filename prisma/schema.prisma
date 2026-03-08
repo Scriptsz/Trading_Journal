@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trades    Trade[]
+  strategies Strategy[]
+  tags      Tag[]
+  settings  UserSettings?
+}
+
+model UserSettings {
+  id                 String @id @default(cuid())
+  userId             String @unique
+  currency           String @default("USD")
+  timezone           String @default("America/New_York")
+  defaultRiskPercent Float  @default(1.0)
+  theme              String @default("dark")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trade {
+  id           String      @id @default(cuid())
+  userId       String
+  asset        String
+  direction    Direction
+  entryDate    DateTime
+  exitDate     DateTime?
+  entryPrice   Float
+  exitPrice    Float?
+  positionSize Float
+  pnl          Float?
+  pnlPercentage Float?
+  riskReward   Float?
+  strategyId   String?
+  status       TradeStatus @default(OPEN)
+  notes        String?
+  screenshots  String[]
+  emotionalState String?
+  mistakesMade String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  strategy Strategy? @relation(fields: [strategyId], references: [id])
+  tags     Tag[]
+
+  @@index([userId, entryDate])
+}
+
+model Strategy {
+  id          String  @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  color       String  @default("#3B82F6")
+
+  trades Trade[]
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+}
+
+model Tag {
+  id     String @id @default(cuid())
+  userId String
+  name   String
+  color  String @default("#6B7280")
+
+  trades Trade[]
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+}
+
+enum Direction {
+  LONG
+  SHORT
+}
+
+enum TradeStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
