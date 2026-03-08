@@ -72,6 +72,43 @@ Open [http://localhost:3000](http://localhost:3000) — the page should now load
 
 ---
 
+### Troubleshooting: `git pull` is blocked by local changes
+
+If `git pull` prints something like:
+
+```
+error: Your local changes to the following files would be overwritten by merge:
+    package-lock.json
+Please commit your changes or stash them before you merge.
+Aborting
+```
+
+your local copy of `package-lock.json` (or another file) has uncommitted edits that conflict with the incoming changes.  
+`package-lock.json` is auto-generated, so it is safe to discard your local version and let Git replace it with the remote version.
+
+**Option A – discard just the conflicting file, then pull (recommended)**
+
+```bash
+git checkout -- package-lock.json   # throw away local changes to this file
+git pull origin <branch-name>       # e.g. main, or copilot/implement-trading-journal-platform
+npm install                         # regenerate node_modules to match the new lock file
+```
+
+**Option B – stash all local changes, pull, then restore**
+
+Use this if you have other uncommitted edits you want to keep:
+
+```bash
+git stash                          # temporarily save all local changes
+git pull origin <branch-name>      # e.g. main, or copilot/implement-trading-journal-platform
+git stash pop                      # restore your other edits
+npm install
+```
+
+After either option, run `npm run dev` and open [http://localhost:3000](http://localhost:3000).
+
+---
+
 ## Installation
 
 1. **Clone the repository**
