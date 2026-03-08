@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -8,6 +8,7 @@ import {
   Calculator, Settings, TrendingUp, ChevronLeft, ChevronRight
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAppContext } from '@/contexts/AppContext'
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -19,9 +20,32 @@ const navItems = [
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 
+const COLLAPSED_KEY = 'tradelog_sidebar_collapsed'
+
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const { settings } = useAppContext()
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(COLLAPSED_KEY)
+      if (stored !== null) setCollapsed(stored === 'true')
+    } catch {}
+  }, [])
+
+  const toggleCollapsed = () => {
+    const next = !collapsed
+    setCollapsed(next)
+    try { localStorage.setItem(COLLAPSED_KEY, String(next)) } catch {}
+  }
+
+  const initials = settings.name
+    .split(' ')
+    .filter(Boolean)
+    .map((w: string) => w[0].toUpperCase())
+    .slice(0, 2)
+    .join('')
 
   return (
     <aside
@@ -69,11 +93,11 @@ export function Sidebar() {
         <div className="px-4 py-4 border-t border-border">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center text-primary text-sm font-semibold">
-              JD
+              {initials || 'U'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-text-primary text-sm font-medium truncate">John Doe</p>
-              <p className="text-text-muted text-xs truncate">john@example.com</p>
+              <p className="text-text-primary text-sm font-medium truncate">{settings.name}</p>
+              <p className="text-text-muted text-xs truncate">{settings.email}</p>
             </div>
           </div>
         </div>
@@ -81,7 +105,7 @@ export function Sidebar() {
 
       {/* Collapse toggle */}
       <button
-        onClick={() => setCollapsed(!collapsed)}
+        onClick={toggleCollapsed}
         className="mx-3 mb-4 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface hover:bg-surface-hover border border-border text-text-muted hover:text-text-primary transition-all text-xs"
       >
         {collapsed ? <ChevronRight className="w-4 h-4" /> : (

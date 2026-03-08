@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { mockTrades } from '@/lib/mockData'
 import { Trade } from '@/types'
 import { cn } from '@/lib/utils'
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, addMonths, subMonths } from 'date-fns'
@@ -18,7 +17,11 @@ function getDayPnL(trades: Trade[]) {
   return trades.reduce((sum, t) => sum + (t.pnl || 0), 0)
 }
 
-export function CalendarView() {
+interface CalendarViewProps {
+  trades?: Trade[]
+}
+
+export function CalendarView({ trades = [] }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date(2024, 5, 1)) // June 2024
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
 
@@ -30,7 +33,7 @@ export function CalendarView() {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-  const selectedDayTrades = selectedDay ? getDayTrades(selectedDay, mockTrades) : []
+  const selectedDayTrades = selectedDay ? getDayTrades(selectedDay, trades) : []
 
   return (
     <div className="space-y-6">
@@ -81,7 +84,7 @@ export function CalendarView() {
             ))}
 
             {days.map((day) => {
-              const dayTrades = getDayTrades(day, mockTrades)
+              const dayTrades = getDayTrades(day, trades)
               const dayPnL = getDayPnL(dayTrades)
               const isSelected = selectedDay ? isSameDay(day, selectedDay) : false
               const isToday = isSameDay(day, new Date())

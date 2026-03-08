@@ -1,17 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { mockStrategies } from '@/lib/mockData'
+import { Trade } from '@/types'
+import { useAppContext } from '@/contexts/AppContext'
 
 interface TradeFormModalProps {
   isOpen: boolean
   onClose: () => void
+  onSave: (data: TradeFormData) => void
+  initialValues?: Trade | null
 }
 
-export function TradeFormModal({ isOpen, onClose }: TradeFormModalProps) {
+export interface TradeFormData {
+  asset: string
+  direction: string
+  entryDate: string
+  exitDate: string
+  entryPrice: string
+  exitPrice: string
+  positionSize: string
+  stopLoss: string
+  takeProfit: string
+  strategyId: string
+  notes: string
+  emotionalState: string
+}
+
+export function TradeFormModal({ isOpen, onClose, onSave, initialValues }: TradeFormModalProps) {
+  const { strategies } = useAppContext()
+
   const [form, setForm] = useState({
     asset: '',
     direction: 'LONG',
@@ -27,18 +46,61 @@ export function TradeFormModal({ isOpen, onClose }: TradeFormModalProps) {
     emotionalState: '',
   })
 
+  useEffect(() => {
+    if (initialValues) {
+      setForm({
+        asset: initialValues.asset ?? '',
+        direction: initialValues.direction ?? 'LONG',
+        entryDate: initialValues.entryDate
+          ? (typeof initialValues.entryDate === 'string'
+              ? initialValues.entryDate.split('T')[0]
+              : new Date(initialValues.entryDate).toISOString().split('T')[0])
+          : '',
+        exitDate: initialValues.exitDate
+          ? (typeof initialValues.exitDate === 'string'
+              ? initialValues.exitDate.split('T')[0]
+              : new Date(initialValues.exitDate).toISOString().split('T')[0])
+          : '',
+        entryPrice: initialValues.entryPrice != null ? String(initialValues.entryPrice) : '',
+        exitPrice: initialValues.exitPrice != null ? String(initialValues.exitPrice) : '',
+        positionSize: initialValues.positionSize != null ? String(initialValues.positionSize) : '',
+        stopLoss: '',
+        takeProfit: '',
+        strategyId: initialValues.strategyId ?? '',
+        notes: initialValues.notes ?? '',
+        emotionalState: initialValues.emotionalState ?? '',
+      })
+    } else {
+      setForm({
+        asset: '',
+        direction: 'LONG',
+        entryDate: new Date().toISOString().split('T')[0],
+        exitDate: '',
+        entryPrice: '',
+        exitPrice: '',
+        positionSize: '',
+        stopLoss: '',
+        takeProfit: '',
+        strategyId: '',
+        notes: '',
+        emotionalState: '',
+      })
+    }
+  }, [initialValues, isOpen])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real app, this would save to the database
-    console.log('Trade submitted:', form)
+    onSave(form)
     onClose()
   }
 
   if (!isOpen) return null
+
+  const isEditing = !!initialValues
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -49,7 +111,9 @@ export function TradeFormModal({ isOpen, onClose }: TradeFormModalProps) {
       <div className="relative bg-background-secondary border border-border rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-text-primary">Add New Trade</h2>
+          <h2 className="text-xl font-bold text-text-primary">
+            {isEditing ? 'Edit Trade' : 'Add New Trade'}
+          </h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface hover:bg-surface-hover text-text-muted hover:text-text-primary transition-all"
@@ -190,7 +254,7 @@ export function TradeFormModal({ isOpen, onClose }: TradeFormModalProps) {
               className="w-full bg-surface border border-border rounded-lg px-4 py-2.5 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
             >
               <option value="">Select Strategy</option>
-              {mockStrategies.map((s) => (
+              {strategies.map((s) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
@@ -231,7 +295,7 @@ export function TradeFormModal({ isOpen, onClose }: TradeFormModalProps) {
               Cancel
             </Button>
             <Button type="submit" variant="primary" className="flex-1">
-              Add Trade
+              {isEditing ? 'Save Changes' : 'Add Trade'}
             </Button>
           </div>
         </form>

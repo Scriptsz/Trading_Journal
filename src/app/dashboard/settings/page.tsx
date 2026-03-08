@@ -1,26 +1,74 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { TopBar } from '@/components/dashboard/TopBar'
 import { Button } from '@/components/ui/Button'
 import { Save, Download, Trash2, Bell, Moon, Sun } from 'lucide-react'
+import { useAppContext } from '@/contexts/AppContext'
+import type { AppSettings } from '@/contexts/AppContext'
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    currency: 'USD',
-    timezone: 'America/New_York',
-    defaultRiskPercent: '1.5',
-    theme: 'dark',
-    emailNotifications: true,
-    weeklyReport: true,
-    tradeAlerts: false,
-  })
+  const { settings: ctxSettings, saveSettings, trades } = useAppContext()
+  const router = useRouter()
+  const [settings, setSettings] = useState<AppSettings>(ctxSettings)
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    setSettings(ctxSettings)
+  }, [ctxSettings])
 
   const handleChange = (field: string, value: any) => {
     setSettings({ ...settings, [field]: value })
   }
+
+  const handleSave = () => {
+    saveSettings(settings)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleExport = () => {
+    const escapeCSV = (val: any): string => {
+      const str = String(val ?? '')
+      return str.includes(',') || str.includes('"') || str.includes('\n')
+        ? `"${str.replace(/"/g, '""')}"`
+        : str
+    }
+    const headers = ['Date', 'Asset', 'Direction', 'Entry', 'Exit', 'Size', 'PnL', 'PnL%', 'R:R', 'Strategy', 'Status', 'Notes']
+    const rows = trades.map((t) => [
+      t.entryDate, t.asset, t.direction, t.entryPrice,
+      t.exitPrice ?? '', t.positionSize, t.pnl ?? '',
+      t.pnlPercentage ?? '', t.riskReward ?? '',
+      t.strategy?.name ?? '', t.status, t.notes ?? '',
+    ])
+    const csv = [headers, ...rows].map((r) => r.map(escapeCSV).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'trades_export.csv'
+    a.click()
+  }
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Are you sure you want to delete all data? This cannot be undone.')) {
+      try {
+        localStorage.removeItem('tradelog_trades')
+        localStorage.removeItem('tradelog_strategies')
+        localStorage.removeItem('tradelog_settings')
+        localStorage.removeItem('tradelog_sidebar_collapsed')
+      } catch {}
+      router.push('/')
+    }
+  }
+
+  const initials = settings.name
+    .split(' ')
+    .filter(Boolean)
+    .map((w) => w[0].toUpperCase())
+    .slice(0, 2)
+    .join('')
 
   return (
     <div>
@@ -32,7 +80,7 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center text-primary text-xl font-bold">
-                JD
+                {initials || 'U'}
               </div>
               <div>
                 <p className="text-text-primary font-medium">Profile Photo</p>
@@ -178,7 +226,7 @@ export default function SettingsPage() {
                 <p className="text-text-primary font-medium text-sm">Export All Data</p>
                 <p className="text-text-muted text-xs mt-0.5">Download all your trades and data as CSV</p>
               </div>
-              <Button variant="secondary" size="sm">
+              <Button variant="secondary" size="sm" onClick={handleExport}>
                 <Download className="w-4 h-4" />
                 Export
               </Button>
@@ -188,7 +236,7 @@ export default function SettingsPage() {
                 <p className="text-danger font-medium text-sm">Delete Account</p>
                 <p className="text-text-muted text-xs mt-0.5">Permanently delete your account and all data</p>
               </div>
-              <Button variant="danger" size="sm">
+              <Button variant="danger" size="sm" onClick={handleDeleteAccount}>
                 <Trash2 className="w-4 h-4" />
                 Delete
               </Button>
@@ -197,8 +245,11 @@ export default function SettingsPage() {
         </div>
 
         {/* Save button */}
-        <div className="flex justify-end">
-          <Button variant="primary">
+        <div className="flex items-center justify-end gap-4">
+          {saved && (
+            <span className="text-success text-sm font-medium">✓ Saved!</span>
+          )}
+          <Button variant="primary" onClick={handleSave}>
             <Save className="w-4 h-4" />
             Save Changes
           </Button>

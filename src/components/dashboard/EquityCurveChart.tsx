@@ -4,8 +4,13 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer
 } from 'recharts'
-import { equityCurveData } from '@/lib/mockData'
 import { formatCurrency } from '@/lib/utils'
+
+interface EquityDataPoint {
+  date: string
+  value: number
+  pnl?: number
+}
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -13,7 +18,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
       <div className="bg-background-secondary border border-border rounded-lg p-3 shadow-xl">
         <p className="text-text-muted text-xs mb-1">{label}</p>
         <p className="text-text-primary font-semibold">{formatCurrency(payload[0].value)}</p>
-        {payload[0].payload.pnl && (
+        {payload[0].payload.pnl != null && (
           <p className={`text-xs ${payload[0].payload.pnl >= 0 ? 'text-success' : 'text-danger'}`}>
             {payload[0].payload.pnl >= 0 ? '+' : ''}{formatCurrency(payload[0].payload.pnl)}
           </p>
@@ -24,10 +29,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null
 }
 
-export function EquityCurveChart() {
+interface EquityCurveChartProps {
+  data?: EquityDataPoint[]
+}
+
+export function EquityCurveChart({ data = [] }: EquityCurveChartProps) {
   return (
     <ResponsiveContainer width="100%" height={280}>
-      <AreaChart data={equityCurveData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+      <AreaChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
         <defs>
           <linearGradient id="equityGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
@@ -62,3 +71,4 @@ export function EquityCurveChart() {
     </ResponsiveContainer>
   )
 }
+

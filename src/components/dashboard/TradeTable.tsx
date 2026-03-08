@@ -3,17 +3,19 @@
 import { useState } from 'react'
 import { Trade } from '@/types'
 import { formatDate, formatCurrency, formatPercentage, cn } from '@/lib/utils'
-import { ArrowUp, ArrowDown } from 'lucide-react'
+import { ArrowUp, ArrowDown, Pencil, Trash2 } from 'lucide-react'
 
 interface TradeTableProps {
   trades: Trade[]
   showActions?: boolean
+  onEdit?: (trade: Trade) => void
+  onDelete?: (id: string) => void
 }
 
 type SortField = 'entryDate' | 'asset' | 'pnl' | 'riskReward'
 type SortDir = 'asc' | 'desc'
 
-export function TradeTable({ trades, showActions = false }: TradeTableProps) {
+export function TradeTable({ trades, showActions = false, onEdit, onDelete }: TradeTableProps) {
   const [sortField, setSortField] = useState<SortField>('entryDate')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
 
@@ -41,6 +43,12 @@ export function TradeTable({ trades, showActions = false }: TradeTableProps) {
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) return <ArrowUp className="w-3 h-3 opacity-30" />
     return sortDir === 'asc' ? <ArrowUp className="w-3 h-3 text-primary" /> : <ArrowDown className="w-3 h-3 text-primary" />
+  }
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this trade?')) {
+      onDelete?.(id)
+    }
   }
 
   return (
@@ -72,6 +80,9 @@ export function TradeTable({ trades, showActions = false }: TradeTableProps) {
             </th>
             <th className="text-left text-xs font-medium text-text-muted py-3 px-4">Strategy</th>
             <th className="text-left text-xs font-medium text-text-muted py-3 px-4">Status</th>
+            {showActions && (onEdit || onDelete) && (
+              <th className="text-left text-xs font-medium text-text-muted py-3 px-4">Actions</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -112,7 +123,7 @@ export function TradeTable({ trades, showActions = false }: TradeTableProps) {
                     )}>
                       {trade.pnl >= 0 ? '+' : ''}{formatCurrency(trade.pnl)}
                     </span>
-                    {trade.pnlPercentage && (
+                    {trade.pnlPercentage != null && (
                       <span className={cn(
                         'ml-1 text-xs',
                         trade.pnlPercentage >= 0 ? 'text-success/70' : 'text-danger/70'
@@ -151,6 +162,30 @@ export function TradeTable({ trades, showActions = false }: TradeTableProps) {
                   {trade.status}
                 </span>
               </td>
+              {showActions && (onEdit || onDelete) && (
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-1">
+                    {onEdit && (
+                      <button
+                        onClick={() => onEdit(trade)}
+                        className="w-7 h-7 flex items-center justify-center rounded bg-surface hover:bg-primary/10 text-text-muted hover:text-primary transition-all"
+                        title="Edit trade"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        onClick={() => handleDelete(trade.id)}
+                        className="w-7 h-7 flex items-center justify-center rounded bg-surface hover:bg-danger/10 text-text-muted hover:text-danger transition-all"
+                        title="Delete trade"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
