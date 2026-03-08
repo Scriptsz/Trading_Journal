@@ -11,14 +11,14 @@ const config: Config = {
     extend: {
       colors: {
         background: {
-          DEFAULT: '#0A0E27',
-          secondary: '#0D1130',
-          tertiary: '#111827',
+          DEFAULT: '#191F1D',
+          secondary: '#303332',
+          tertiary: '#616161',
         },
         surface: {
-          DEFAULT: 'rgba(255, 255, 255, 0.05)',
-          hover: 'rgba(255, 255, 255, 0.08)',
-          active: 'rgba(255, 255, 255, 0.12)',
+          DEFAULT: 'rgba(242, 242, 242, 0.05)',
+          hover: 'rgba(242, 242, 242, 0.08)',
+          active: 'rgba(242, 242, 242, 0.12)',
         },
         primary: {
           DEFAULT: '#3B82F6',
@@ -41,13 +41,13 @@ const config: Config = {
           light: '#FCD34D',
         },
         text: {
-          primary: '#F9FAFB',
-          secondary: '#9CA3AF',
-          muted: '#6B7280',
+          primary: '#F2F2F2',
+          secondary: '#C4C4C4',
+          muted: '#9D9D9D',
         },
         border: {
-          DEFAULT: 'rgba(255, 255, 255, 0.1)',
-          hover: 'rgba(255, 255, 255, 0.2)',
+          DEFAULT: 'rgba(196, 196, 196, 0.2)',
+          hover: 'rgba(196, 196, 196, 0.35)',
         },
       },
       fontFamily: {
